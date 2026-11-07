@@ -22,8 +22,8 @@ class Usuario(base):
         self.ativo = ativo
         self.admin = admin 
 
-
-class pedido(base)
+#Pedidos
+class pedido(base):
     _tablename_ = "Pedidos"
 
     STATUS_PEDIDOS = (
@@ -40,4 +40,28 @@ class pedido(base)
     #itens  
 
     def _init_(self,usuario,status="PENDENTE", preco=0):
+        self.usuario = usuario
+        self.preco = preco
+        self.status = status
+
+
+  #ItensPedido
+class ItensPedido(base):
+    __tablename__ = "itenspedido"
+
+    id = Column("id", Integer, primary_key=True, autoincrement=True) 
+    quantidade = Column("quantidade", Integer)
+    sabor = Column("sabor", String) 
+    tamanho = Column("tamanho", String)
+    preco_unitario = Column("Preco_unitario", Float)
+    pedido = Column("pedido", ForeignKey("pedido.id'"))
+
+    def __init__(self,quantidade,sabor,tamanho,preco_unitario,pedido):
+        self.quantidade = quantidade
+        self.sabor = sabor 
+        self.tamanho = tamanho
+        self.preco_unitario = preco_unitario
+        self.pedido = pedido 
+
+      
         
