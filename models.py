@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine, Column, String, Integer, Boolean, Float, ForeignKey
 from sqlalchemy.orm import declaretive_base
+from sqlalchemy_utils.types import ChoiceType
 
 db = create_engine("sqllite:///banco.db")
 base = declaretive_base()
@@ -20,3 +21,23 @@ class Usuario(base):
         self.senha = senha 
         self.ativo = ativo
         self.admin = admin 
+
+
+class pedido(base)
+    _tablename_ = "Pedidos"
+
+    STATUS_PEDIDOS = (
+         ("PENDENTE", "PENDENTE"),
+         ("CANCELADO", "CANCELADO")
+         ("FINALIZADO", "FINALIZADO")
+
+    )
+
+    id = Column("id", Integer, primary_key=True, autoincrement=True) 
+    status = Column("status", ChoiceType(choice=STATUS_PEDIDOS)) 
+    usuario = Column("usario", ForeignKey("usuario.id")) 
+    preco =  Column('preco', Float)
+    #itens  
+
+    def _init_(self,usuario,status="PENDENTE", preco=0):
+        
