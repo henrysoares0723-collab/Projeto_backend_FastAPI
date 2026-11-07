@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine, Column, String, Integer, Boolean, Float, ForeignKey
-from sqlalchemy.orm import declaretive_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils.types import ChoiceType
 
-db = create_engine("sqllite:///banco.db")
-base = declaretive_base()
+db = create_engine("sqlite:///banco.db")
+base = declarative_base()
 
 class Usuario(base):
     __tablename__ = "usuarios"
@@ -17,44 +17,43 @@ class Usuario(base):
 
     def __init__(self, nome, email, senha, ativo=True, admin=False):
         self.nome = nome 
-        self.emal = email
+        self.email = email
         self.senha = senha 
         self.ativo = ativo
         self.admin = admin 
 
 #Pedidos
 class pedido(base):
-    _tablename_ = "Pedidos"
+    __tablename__ = "pedidos"
 
-    STATUS_PEDIDOS = (
-         ("PENDENTE", "PENDENTE"),
-         ("CANCELADO", "CANCELADO")
-         ("FINALIZADO", "FINALIZADO")
+    #STATUS_PEDIDOS = (
+         #("PENDENTE", "PENDENTE"),
+         ##("FINALIZADO", "FINALIZADO"),
 
-    )
+    #)
 
     id = Column("id", Integer, primary_key=True, autoincrement=True) 
-    status = Column("status", ChoiceType(choice=STATUS_PEDIDOS)) 
-    usuario = Column("usario", ForeignKey("usuario.id")) 
+    status = Column("status", String)
+    usuario = Column("usuario", Integer, ForeignKey("usuarios.id"))  
     preco =  Column('preco', Float)
     #itens  
 
-    def _init_(self,usuario,status="PENDENTE", preco=0):
+    def __init__(self,usuario,status="PENDENTE", preco=0):
         self.usuario = usuario
         self.preco = preco
         self.status = status
 
 
   #ItensPedido
-class ItensPedido(base):
-    __tablename__ = "itenspedido"
+class itenspedido(base):
+    __tablename__ = "itenspedidos"
 
     id = Column("id", Integer, primary_key=True, autoincrement=True) 
     quantidade = Column("quantidade", Integer)
     sabor = Column("sabor", String) 
     tamanho = Column("tamanho", String)
-    preco_unitario = Column("Preco_unitario", Float)
-    pedido = Column("pedido", ForeignKey("pedido.id'"))
+    preco_unitario = Column("preco_unitario", Float)
+    pedido = Column("pedido", Integer, ForeignKey("pedidos.id"))
 
     def __init__(self,quantidade,sabor,tamanho,preco_unitario,pedido):
         self.quantidade = quantidade
